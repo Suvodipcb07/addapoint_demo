@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Adda point - Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Included jsPDF Library for real PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        .premium-font { font-family: 'Cinzel', serif; }
+        .body-font { font-family: 'Montserrat', sans-serif; }
+        .menu-bg { background-color: #080808; }
+        .gold-text { color: #D4AF37; }
+        .gold-border { border-color: #C5A880; }
+        .gold-bg { background-color: #C5A880; }
+        
+        /* Premium custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5A880;
+            border-radius: 3px;
+        }
+
+        /* Subtle animated background shine */
+        .bg-gradient-luxury {
+            background: radial-gradient(circle at 50% 50%, #1a1510 0%, #080808 100%);
+        }
+
+        /* Click wave effect on menu items */
+        .menu-item-interactive {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-item-interactive:hover {
+            background-color: rgba(197, 168, 128, 0.05);
+            transform: translateX(4px);
+        }
+
+        /* Ambient floating animation */
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float-gentle 8s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="body-font bg-gradient-luxury min-h-screen text-gray-100 overflow-x-hidden relative flex flex-col items-center justify-center p-2 md:p-6">
+
+    <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-color-dodge">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#C5A880" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+            </radialGradient>
+            <circle cx="20%" cy="30%" r="150" fill="url(#grad1)" />
+            <circle cx="80%" cy="70%" r="200" fill="url(#grad1)" />
+        </svg>
+    </div>
+
+    <div class="w-full max-w-6xl z-10 my-auto">
+
+        <div id="welcome-card" class="bg-black/80 backdrop-blur-md border border-neutral-800 p-8 md:p-12 rounded-2xl shadow-2xl max-w-lg mx-auto text-center transition-all duration-700 ease-in-out transform scale-100">
+            <div class="mb-6 flex flex-col items-center">
+                <div class="w-16 h-16 border-2 gold-border rounded-full flex items-center justify-center mb-3">
+                    <span class="premium-font gold-text text-2xl font-bold"> A </span>
+                </div>
+                <div class="h-[1px] w-12 gold-bg"></div>
+            </div>
+            
+            <h2 class="premium-font text-3xl md:text-4xl font-light tracking-widest mb-4 gold-text"> Adda point </h2>
+            <p class="text-neutral-400 font-light tracking-wider text-xs uppercase mb-8">Haute Cuisine & Exquisite Gastronomy</p>
+            
+            <form id="name-form" onsubmit="handleNameSubmit(event)" class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">Guest Registration</label>
+                    <input type="text" id="user-name" required placeholder="Enter Your Name..." 
+                           class="w-full bg-neutral-900/60 text-white font-light px-4 py-3.5 border border-neutral-800 rounded-lg focus:outline-none focus:border-amber-500 text-center tracking-widest text-lg transition duration-300">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-neutral-900 font-bold tracking-widest uppercase py-4 rounded-lg shadow-lg hover:shadow-amber-500/10 transform hover:-translate-y-0.5 transition duration-300 text-sm">
+                    Enter 
+                </button>
+            </form>
+        </div>
+
+        <div id="main-interface" class="hidden flex flex-col lg:flex-row gap-8 items-start w-full">
+            
+            <div class="menu-bg text-gray-300 p-6 md:p-10 rounded-2xl shadow-2xl w-full lg:w-7/12 border border-neutral-800/80 relative overflow-hidden flex flex-col justify-between min-h-[850px]">
+                
+                <div class="absolute inset-2 border border-amber-500/10 pointer-events-none rounded-xl"></div>
+                <div class="absolute inset-3 border border-amber-500/5 pointer-events-none rounded-xl"></div>
+
+                <div>
+                    <div class="flex justify-between items-start mb-10 relative z-10">
+                        <div>
+                            <span class="text-[10px] tracking-widest text-neutral-500 uppercase font-bold block mb-1">Welcome to Luxury</span>
+                            <h1 class="premium-font gold-text text-3xl md:text-4xl tracking-widest font-black leading-none">PREMIUM<br>MENU</h1>
+                        </div>
+                        <div class="text-right border-l gold-border pl-4">
+                            <p class="premium-font gold-text tracking-widest text-lg font-bold"> A </p>
+                            <p class="text-[8px] uppercase tracking-widest text-neutral-400 font-semibold"> Adda point Restaurant</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-8 relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-neutral-900 pb-4">
+                        <p class="text-xs tracking-wider uppercase text-neutral-400">
+                            Name - <span id="display-name" class="gold-text font-bold">Guest</span>
+                        </p>
+                        <span class="text-[9px] text-amber-500/60 bg-amber-500/5 border border-amber-500/10 px-2 py-1 rounded">
+                            ✨ Click directly on items to add to order
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 mb-12 relative z-10">
+                        
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="gold-text premium-font text-base font-bold mb-4 tracking-widest border-b border-amber-500/20 pb-2 flex justify-between items-center">
+                                    <span>APPETIZERS</span>
+                                    <span class="text-[9px] text-neutral-500 font-sans tracking-normal">01</span>
+                                </h3>
+                                
+                                <div class="space-y-4">
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('beef')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm"> Beriyani </span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">100.00 rs </span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Fragrant long-grain basmati rice layered with spiced meat and aromatics.</p>
+                                    </div>
+
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('scallops')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Chicken chap </span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">120.00 rs </span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Slow-cooked marinated chicken leg in a rich, flavorful poppy seed gravy.</p>
+                                    </div>
+
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('oysters')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm"> Chicken Roll </span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">80.00 rs </span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Skewered chicken pieces wrapped in a flaky, pan-fried paratha bread roll.</p>
+                                    </div>
+
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('burrata')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Egg -roll</span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono"> 50.00 rs </span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Crispy paratha coated with a layer of egg, rolled with fresh chopped onions.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="gold-text premium-font text-base font-bold mb-4 tracking-widest border-b border-amber-500/20 pb-2 flex justify-between items-center">
+                                    <span>DESSERTS</span>
+                                    <span class="text-[9px] text-neutral-500 font-sans tracking-normal">03</span>
+                                </h3>
+                                
+                                <div class="space-y-4">
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('cake')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Lava Cake</span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">120.00 rs </span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Warm chocolate center with Tahitian vanilla ice cream</p>
+                                    </div>
+
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('brulee')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Lassi </span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">50.00 rs</span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Sweetened, thick churned yogurt drink topped with a splash of rose water.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col justify-between space-y-8">
+                            <div>
+                                <h3 class="gold-text premium-font text-base font-bold mb-4 tracking-widest border-b border-amber-500/20 pb-2 flex justify-between items-center">
+                                    <span>MAINS</span>
+                                    <span class="text-[9px] text-neutral-500 font-sans tracking-normal">02</span>
+                                </h3>
+                                
+                                <div class="space-y-4">
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('mignon')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Mix - Fried Rice </span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">450.00 rs</span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Classic wok-tossed rice mixed with fresh vegetables, chicken, shrimp, and egg.</p>
+                                    </div>
+
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('seabass')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Pizza </span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">450.00 rs</span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Hand-stretched crust loaded with gourmet stringy cheese and marinara base.</p>
+                                    </div>
+
+                                    <div class="menu-item-interactive cursor-pointer p-1 rounded group" onclick="quickAddItem('risotto')">
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="font-medium text-neutral-200 group-hover:text-amber-400 transition-colors text-sm">Wild Mushroom Risotto</span>
+                                            <span class="flex-grow border-b border-dotted border-neutral-800 mx-2"></span>
+                                            <span class="gold-text font-semibold text-sm font-mono">280.00 rs</span>
+                                        </div>
+                                        <p class="text-[11px] text-neutral-500 italic mt-0.5">Arborio rice finished with porcini & grana padano</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="relative flex items-center justify-center p-4 min-h-[220px]">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <svg class="w-full h-full max-w-[200px]" viewBox="0 0 100 100">
+                                        <polygon points="10,50 50,10 90,50" fill="none" stroke="#C5A880" stroke-width="0.3" opacity="0.3"/>
+                                        <polygon points="20,80 80,80 50,20" fill="none" stroke="#C5A880" stroke-width="0.3" opacity="0.2"/>
+                                        <circle cx="50" cy="50" r="42" fill="none" stroke="#C5A880" stroke-width="0.1" stroke-dasharray="1,2"/>
+                                    </svg>
+                                </div>
+
+                                <div class="relative w-44 h-44 rounded-full bg-neutral-900 border border-neutral-800/80 shadow-2xl flex items-center justify-center overflow-hidden animate-float">
+                                    <div class="absolute inset-2 rounded-full border border-neutral-800"></div>
+                                    <div class="absolute inset-3 rounded-full border-2 border-dashed border-amber-500/10"></div>
+                                    
+                                    <svg class="w-28 h-28 transform rotate-12" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="45" fill="none" stroke="#222" stroke-width="2"/>
+                                        <path d="M 25 70 Q 20 60 30 55 Z" fill="#F4D03F" opacity="0.8"/>
+                                        <path d="M 75 35 Q 80 45 70 50 Z" fill="#F4D03F" opacity="0.8"/>
+                                        <path d="M 45 35 C 40 30, 42 20, 50 30 C 58 20, 60 30, 55 35 Z" fill="#2ECC71" opacity="0.9"/>
+                                        <path d="M 45 40 C 35 30, 25 45, 38 60 C 45 68, 55 65, 58 55 C 50 52, 48 45, 45 40 Z" fill="#E67E22" stroke="#D35400" stroke-width="0.5"/>
+                                        <path d="M 55 45 C 65 35, 75 50, 62 65 C 55 73, 45 70, 42 60 C 50 57, 52 50, 55 45 Z" fill="#D35400" stroke="#BA4A00" stroke-width="0.5"/>
+                                        <circle cx="50" cy="62" r="2" fill="#E74C3C"/>
+                                        <circle cx="45" cy="55" r="1.5" fill="#E74C3C"/>
+                                        <circle cx="55" cy="52" r="1.2" fill="#E74C3C"/>
+                                        <path d="M 48 50 Q 52 42 50 38" stroke="#27AE60" stroke-width="1.5" fill="none"/>
+                                    </svg>
+                                </div>
+
+                                <div class="absolute -bottom-1 bg-black/90 border border-amber-500/30 px-3 py-1 rounded text-center max-w-[140px] shadow-lg backdrop-blur-sm">
+                                    <span class="gold-text premium-font text-[9px] tracking-widest block font-bold">CHEF'S SPECIAL</span>
+                                    <p class="text-[8px] text-neutral-400 leading-tight">Artisanal Prawn Delight</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="text-center text-[10px] text-neutral-600 border-t border-neutral-900 pt-4 flex justify-between items-center z-10">
+                    <span>EST. 1926</span>
+                    <span class="tracking-widest uppercase">We Deliver | +1 (800) L-ETOILE | www.letoile.com</span>
+                    <span>HAUTE CUISINE</span>
+                </div>
+            </div>
+
+            <div class="bg-black/40 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-xl w-full lg:w-5/12 border border-neutral-800 flex flex-col justify-between min-h-[850px]">
+                
+                <div>
+                    <div class="flex justify-between items-center mb-6 border-b border-neutral-900 pb-4">
+                        <div>
+                            <h2 class="text-xl premium-font gold-text font-bold tracking-widest">YOUR SELECTIONS</h2>
+                            <p class="text-[10px] uppercase text-neutral-500 tracking-wider">Configure quantities & request preferences</p>
+                        </div>
+                        <span id="items-badge" class="bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs px-2.5 py-1 rounded-full font-semibold">
+                            0 items
+                        </span>
+                    </div>
+                    
+                    <div id="order-selectors" class="space-y-3 max-h-[460px] overflow-y-auto pr-2">
+                        </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-neutral-900">
+
+                    <div class="mb-5">
+                        <label class="block text-[10px] uppercase tracking-widest text-neutral-500 mb-1.5 font-semibold">Special Dining Instructions</label>
+                        <textarea id="special-requests" rows="2" placeholder="Dietary restrictions, temperature preferences, allergens..." 
+                                  class="w-full text-xs bg-neutral-900/50 border border-neutral-800 rounded-lg p-2.5 text-gray-300 focus:outline-none focus:border-amber-500/50 resize-none placeholder-neutral-600"></textarea>
+                    </div>
+
+                    <div class="space-y-2 text-xs text-neutral-400 border-b border-neutral-900 pb-3 mb-4">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal" class="font-mono text-neutral-200">0.00 rs</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>State Taxes (8.25%)</span>
+                            <span id="summary-tax" class="font-mono text-neutral-200">0.00 rs</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-baseline mb-6">
+                        <span class="premium-font gold-text text-lg tracking-widest font-bold">ESTIMATED TOTAL</span>
+                        <span id="total-price" class="text-2xl font-bold font-mono gold-text">0.00 rs</span>
+                    </div>
+
+                    <button onclick="confirmOrder()" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-neutral-900 font-bold uppercase tracking-widest py-4 rounded-xl shadow-lg hover:shadow-amber-500/20 transform hover:-translate-y-0.5 transition duration-300 text-sm">
+                        Submit Order to Kitchen
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="receipt-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+        <div class="bg-neutral-950 border border-neutral-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl relative">
+            
+            <div class="bg-neutral-900 p-6 border-b border-neutral-800 text-center relative">
+                <div class="w-12 h-12 border-2 gold-border rounded-full flex items-center justify-center mx-auto mb-2">
+                    <span class="premium-font gold-text text-lg font-bold"> A </span>
+                </div>
+                <h3 class="premium-font gold-text text-xl tracking-widest font-light"> Adda point </h3>
+                <p class="text-[9px] uppercase tracking-widest text-neutral-500">Order Dispatched Successfully</p>
+                
+                <div class="absolute -bottom-3 -left-3 w-6 h-6 rounded-full bg-black/90"></div>
+                <div class="absolute -bottom-3 -right-3 w-6 h-6 rounded-full bg-black/90"></div>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <div class="flex justify-between text-neutral-400 text-[10px] tracking-wider uppercase">
+                    <div>
+                        <p>Guest: <span id="receipt-guest" class="text-white font-semibold">User</span></p>
+                        <p>Table: <span class="text-white font-semibold"> Table #12</span></p>
+                    </div>
+                    <div class="text-right">
+                        <p>Order: <span id="receipt-number" class="text-white font-semibold">#LET-0000</span></p>
+                        <p>Date: <span id="receipt-date" class="text-white font-semibold">2026-06-21</span></p>
+                    </div>
+                </div>
+
+                <div class="border-t border-dashed border-neutral-800"></div>
+
+                <div id="receipt-items" class="space-y-2 text-xs text-neutral-300">
+                    </div>
+
+                <div id="receipt-special-container" class="hidden bg-neutral-900/50 p-3 rounded border border-neutral-900">
+                    <p class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold mb-1">Kitchen Instructions:</p>
+                    <p id="receipt-special-text" class="text-xs text-neutral-300 italic"></p>
+                </div>
+
+                <div class="border-t border-dashed border-neutral-800"></div>
+
+                <div class="space-y-2 text-xs text-neutral-400 font-mono">
+                    <div class="flex justify-between">
+                        <span>SUBTOTAL</span>
+                        <span id="receipt-subtotal">0.00 rs</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>TAX (8.25%)</span>
+                        <span id="receipt-tax">0.00 rs</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold gold-text pt-2 border-t border-neutral-900">
+                        <span>GRAND TOTAL</span>
+                        <span id="receipt-total">0.00 rs</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center justify-center py-2 space-y-1">
+                    <div class="h-8 w-44 flex gap-[1px]">
+                        <div class="bg-neutral-600 flex-grow h-full w-[2px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[1px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[4px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[2px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[1px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[3px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[1px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[4px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[2px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[1px]"></div>
+                        <div class="bg-neutral-600 flex-grow h-full w-[3px]"></div>
+                    </div>
+                    <span class="text-[8px] text-neutral-500 tracking-widest">ORDER SENT TO KITCHEN</span>
+                </div>
+            </div>
+
+            <div class="p-6 bg-neutral-900 border-t border-neutral-800 flex gap-3">
+                <button onclick="closeReceipt()" class="w-full bg-neutral-800 hover:bg-neutral-700 text-neutral-200 py-3 rounded-lg text-xs tracking-widest font-bold uppercase transition">
+                    New Order
+                </button>
+                <button onclick="window.print()" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-neutral-900 py-3 rounded-lg text-xs tracking-widest font-bold uppercase transition">
+                    Print Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+
+   <script>
+    let audioCtx;
+    function playChime(frequency = 523.25, type = 'sine', duration = 1.5) { 
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = type;
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch(e) {
+            console.log("Audio contexts pending interaction restrictions.");
+        }
+    }
+
+    const menuItems = [
+        { id: 'beef', name: 'Beriyani', price: 100.00, category: 'Appetizers' },
+        { id: 'scallops', name: 'Chicken chap', price: 120.00, category: 'Appetizers' },
+        { id: 'oysters', name: 'Chicken Roll', price: 80.00, category: 'Appetizers' },
+        { id: 'burrata', name: 'Egg -roll', price: 50.00, category: 'Appetizers' },
+        { id: 'mignon', name: 'Mix - Fried Rice', price: 450.00, category: 'Mains' },
+        { id: 'seabass', name: 'Pizza', price: 450.00, category: 'Mains' },
+        { id: 'risotto', name: 'Wild Mushroom Risotto', price: 280.00, category: 'Mains' },
+        { id: 'cake', name: 'Lava Cake', price: 120.00, category: 'Desserts' },
+        { id: 'brulee', name: 'Lassi', price: 50.00, category: 'Desserts' }
+    ];
+
+    let orderQuantities = {};
+    menuItems.forEach(item => orderQuantities[item.id] = 0);
+
+    function handleNameSubmit(event) {
+        event.preventDefault();
+        const nameInput = document.getElementById('user-name').value;
+        if (nameInput.trim() !== "") {
+            playChime(659.25, 'sine', 1.0); 
+            document.getElementById('display-name').innerText = nameInput;
+            document.getElementById('welcome-card').classList.add('hidden');
+            document.getElementById('main-interface').classList.remove('hidden');
+            renderOrderSelectors();
+            calculateTotal();
+        }
+    }
+
+    function renderOrderSelectors() {
+        const container = document.getElementById('order-selectors');
+        container.innerHTML = '';
+
+        let currentCategory = '';
+        
+        menuItems.forEach(item => {
+            if (currentCategory !== item.category) {
+                currentCategory = item.category;
+                const catHeader = document.createElement('h4');
+                catHeader.className = "text-[10px] font-bold uppercase text-neutral-500 mt-5 mb-2.5 tracking-widest border-l-2 gold-border pl-2";
+                catHeader.innerText = currentCategory;
+                container.appendChild(catHeader);
+            }
+
+            const itemRow = document.createElement('div');
+            itemRow.className = "flex justify-between items-center bg-neutral-900/40 p-3 rounded-lg border border-neutral-800/60 hover:border-neutral-800 transition duration-300";
+            itemRow.innerHTML = `
+                <div>
+                    <p class="font-medium text-neutral-300 text-xs">${item.name}</p>
+                    <p class="text-[10px] text-neutral-500 font-mono">${item.price.toFixed(2)} rs</p>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <button onclick="updateQty('${item.id}', -1)" class="w-7 h-7 rounded bg-neutral-800 flex items-center justify-center text-neutral-400 font-bold hover:bg-neutral-700 hover:text-white transition text-xs">-</button>
+                    <span id="qty-${item.id}" class="w-6 text-center font-semibold text-xs font-mono text-neutral-200">0</span>
+                    <button onclick="updateQty('${item.id}', 1)" class="w-7 h-7 rounded bg-neutral-800 flex items-center justify-center text-neutral-400 font-bold hover:bg-neutral-700 hover:text-white transition text-xs">+</button>
+                </div>
+            `;
+            container.appendChild(itemRow);
+        });
+    }
+
+    function quickAddItem(id) {
+        updateQty(id, 1);
+        playChime(880, 'triangle', 0.15); 
+    }
+
+    function updateQty(id, change) {
+        let newQty = orderQuantities[id] + change;
+        if (newQty >= 0) {
+            orderQuantities[id] = newQty;
+            const element = document.getElementById(`qty-${id}`);
+            if (element) {
+                element.innerText = newQty;
+            }
+            calculateTotal();
+        }
+    }
+
+    function calculateTotal() {
+        let subtotal = 0;
+        let totalItemCount = 0;
+
+        menuItems.forEach(item => {
+            const qty = orderQuantities[item.id];
+            subtotal += qty * item.price;
+            totalItemCount += qty;
+        });
+
+        const taxRate = 0.0825; 
+        const tax = subtotal * taxRate;
+        const total = subtotal + tax;
+
+        document.getElementById('items-badge').innerText = `${totalItemCount} item${totalItemCount !== 1 ? 's' : ''}`;
+        document.getElementById('summary-subtotal').innerText = `${subtotal.toFixed(2)} rs`;
+        document.getElementById('summary-tax').innerText = `${tax.toFixed(2)} rs`;
+        document.getElementById('total-price').innerText = `${total.toFixed(2)} rs`;
+    }
+
+    function confirmOrder() {
+        const name = document.getElementById('display-name').innerText;
+        const specialRequests = document.getElementById('special-requests').value.trim();
+        
+        let subtotal = 0;
+        let total = 0;
+        let orderedListHtml = '';
+        let itemPurchased = false;
+
+        let textItemsList = '';
+        let pdfItemsArray = []; 
+
+        menuItems.forEach(item => {
+            const qty = orderQuantities[item.id];
+            if (qty > 0) {
+                itemPurchased = true;
+                const itemTotal = qty * item.price;
+                subtotal += itemTotal;
+                orderedListHtml += `
+                    <div class="flex justify-between items-baseline py-1">
+                        <span>${qty}x ${item.name}</span>
+                        <span class="font-mono">${itemTotal.toFixed(2)} rs</span>
+                    </div>
+                `;
+                textItemsList += `• ${qty}x ${item.name} — ${itemTotal.toFixed(2)} rs\n`;
+                pdfItemsArray.push(`${qty}x ${item.name} - ${itemTotal.toFixed(2)} rs`);
+            }
+        });
+
+        if (!itemPurchased) {
+            const orderSel = document.getElementById('order-selectors');
+            orderSel.classList.add('translate-x-2');
+            setTimeout(() => orderSel.classList.remove('translate-x-2'), 100);
+            playChime(220, 'sawtooth', 0.3); 
+            return;
+        }
+
+        const tax = subtotal * 0.0825;
+        total = subtotal + tax;
+
+        const orderIdNum = Math.floor(1000 + Math.random() * 9000);
+        const currentDateTime = new Date().toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+
+        // Update DOM Elements
+        document.getElementById('receipt-guest').innerText = name;
+        document.getElementById('receipt-items').innerHTML = orderedListHtml;
+        document.getElementById('receipt-subtotal').innerText = `${subtotal.toFixed(2)} rs`;
+        document.getElementById('receipt-tax').innerText = `${tax.toFixed(2)} rs`;
+        document.getElementById('receipt-total').innerText = `${total.toFixed(2)} rs`;
+        document.getElementById('receipt-number').innerText = `#LET-${orderIdNum}`;
+        document.getElementById('receipt-date').innerText = currentDateTime;
+
+        const specialContainer = document.getElementById('receipt-special-container');
+        if (specialRequests !== '') {
+            document.getElementById('receipt-special-text').innerText = `"${specialRequests}"`;
+            specialContainer.classList.remove('hidden');
+        } else {
+            specialContainer.classList.add('hidden');
+        }
+
+        // Audio effects
+        playChime(523.25, 'sine', 0.5); 
+        setTimeout(() => playChime(659.25, 'sine', 0.5), 150); 
+        setTimeout(() => playChime(783.99, 'sine', 1.2), 300); 
+
+        // Show UI Modal Receipt
+        document.getElementById('receipt-modal').classList.remove('hidden');
+
+        // --- DYNAMIC PDF SIZING & GENERATION ---
+        try {
+            const { jsPDF } = window.jspdf;
+            
+            // Calculate necessary height based on number of items and notes
+            let baseHeight = 110; 
+            let itemsHeight = pdfItemsArray.length * 5;
+            let notesHeight = specialRequests ? 20 : 0;
+            let finalPageHeight = baseHeight + itemsHeight + notesHeight;
+
+            const doc = new jsPDF({
+                orientation: "portrait",
+                unit: "mm",
+                format: [80, finalPageHeight] 
+            });
+
+            doc.setFont("courier", "bold");
+            doc.setFontSize(14);
+            doc.text("ADDA POINT", 40, 12, { align: "center" });
+            
+            doc.setFont("courier", "normal");
+            doc.setFontSize(9);
+            doc.text("================================", 40, 18, { align: "center" });
+            doc.text(`Order ID : #LET-${orderIdNum}`, 5, 24);
+            doc.text(`Date/Time: ${currentDateTime}`, 5, 29);
+            doc.text(`Guest    : ${name}`, 5, 34);
+            doc.text(`Table    : Table #12`, 5, 39);
+            doc.text("--------------------------------", 40, 44, { align: "center" });
+
+            let yPosition = 49;
+            pdfItemsArray.forEach(itemText => {
+                doc.text(itemText, 5, yPosition);
+                yPosition += 5;
+            });
+
+            doc.text("--------------------------------", 40, yPosition, { align: "center" });
+            yPosition += 5;
+            doc.text(`Subtotal : ${subtotal.toFixed(2)} rs`, 5, yPosition);
+            yPosition += 5;
+            doc.text(`Tax(8.25%): ${tax.toFixed(2)} rs`, 5, yPosition);
+            yPosition += 5;
+            
+            doc.setFont("courier", "bold");
+            doc.text(`GRAND TOTAL: ${total.toFixed(2)} rs`, 5, yPosition);
+            yPosition += 6;
+
+            doc.setFont("courier", "normal");
+            doc.text("================================", 40, yPosition, { align: "center" });
+            yPosition += 5;
+            doc.text("Instructions:", 5, yPosition);
+            yPosition += 5;
+            
+            const instructionLines = doc.splitTextToSize(specialRequests ? specialRequests : "None", 70);
+            doc.text(instructionLines, 5, yPosition);
+            yPosition += (instructionLines.length * 4) + 2;
+
+            doc.text("================================", 40, yPosition, { align: "center" });
+            yPosition += 5;
+            doc.setFont("courier", "bold");
+            doc.text("THANK YOU FOR YOUR ORDER!", 40, yPosition, { align: "center" });
+
+            // Automatically download on customer phone
+            doc.save(`Adda_Point_Receipt_LET-${orderIdNum}.pdf`);
+        } catch (error) {
+            console.error("PDF Generation failed:", error);
+        }
+
+        // --- CLEAN WHATSAPP ORDER SENT TO MANAGER ---
+        // Change the placeholder below to the manager's actual phone number with country code (e.g., "919876543210")
+        const managerPhoneNumber = "7363908846";  
+        
+        const whatsappText = encodeURIComponent(
+`*★ NEW KITCHEN ORDER ★*
+*Order ID:* #LET-${orderIdNum}
+*Date/Time:* ${currentDateTime}
+*Guest Name:* ${name}
+*Table Setup:* Table #12
+
+*--- Items Ordered ---*
+${textItemsList}
+*Subtotal:* ${subtotal.toFixed(2)} rs
+*Tax (8.25%):* ${tax.toFixed(2)} rs
+*Grand Total:* ${total.toFixed(2)} rs
+${specialRequests ? `\n*Kitchen Notes:* _"${specialRequests}"_` : ''}`
+        );
+
+        window.open(`https://api.whatsapp.com/send?phone=${managerPhoneNumber}&text=${whatsappText}`, '_blank');
+    }
+
+    function closeReceipt() {
+        menuItems.forEach(item => {
+            orderQuantities[item.id] = 0;
+        });
+        document.getElementById('special-requests').value = '';
+        
+        renderOrderSelectors();
+        calculateTotal();
+        document.getElementById('receipt-modal').classList.add('hidden');
+    }
+</script>
+</body>
+</html>
